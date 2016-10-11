@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>MSE tests</title>
+    </head>
+    <body>
+        <h1>MSE tests</h1>
+        <ul>
+            <li id="mp2t-mp3">
+                <h2>MP3 inside of a MPEG-TS container</h2>
+                <audio controls></audio>
+                <ul class="console"></ul>
+            </li>
+            <li id="mp4-aac">
+                <h2>AAC inside of a MP4 container</h2>
+                <audio controls></audio>
+                <ul class="console"></ul>
+            </li>
+            <li id="mp4-mp3">
+                <h2>MP3 inside of a MP4 container</h2>
+                <audio controls></audio>
+                <ul class="console"></ul>
+            </li>
+            <li id="webm-opus">
+                <h2>Opus inside of a WebM container</h2>
+                <audio controls></audio>
+                <ul class="console"></ul>
+            </li>
+        </ul>
+        <script>
+            'use strict';
+
+            function load (file) {
+                return new Promise(function (resolve, reject) {
+                    var xmlHttpRequest = new XMLHttpRequest();
+
+                    xmlHttpRequest.open('GET', file);
+                    xmlHttpRequest.responseType = 'arraybuffer';
+
+                    xmlHttpRequest.onerror = function (event) {
+                        reject(event);
+                    };
+                    xmlHttpRequest.onload = function () {
+                        resolve(xmlHttpRequest.response);
+                    };
+
+                    xmlHttpRequest.send();
+                });
+            }
+
+            function log (id, message) {
+                var cnsl = document.querySelector(`#${ id } .console`),
+                    item = document.createElement('li');
+
+                item.textContent = message;
+
+                cnsl.appendChild(item);
+            }
+
+            function setup (mimeType, codec, file, mimeTypeWithCodec) {
+                var audioElement,
+                    id,
+                    mediaSource;
+
+                id = `${ mimeType.split(/\//)[1] }-${ codec.toLowerCase() }`;
+
+                if (MediaSource.isTypeSupported(mimeTypeWithCodec)) {
+                    log(id, `Audio of type "${ mimeType }" with ${ codec } as a codec seems to be supported.`);
+                } else {
+                    log(id, `Audio of type "${ mimeType }" with ${ codec } as a codec seems to be NOT supported.`);
+                }
+
+                audioElement = document.querySelector(`#${ id } audio`);
+                mediaSource = new MediaSource();
+
+                audioElement.src = URL.createObjectURL(mediaSource);
+
+                mediaSource.addEventListener('error', function () {
+                    log(id, 'An "error" event was fired by the MediaSource.');
+                });
+                mediaSource.addEventListener('sourceclose', function () {
+                    log(id, 'The "sourceclose" event of the MediaSource was fired.');
+                });
+                mediaSource.addEventListener('sourceended', function () {
+                    log(id, 'The "sourceended" event of the MediaSource was fired.');
+                });
+                mediaSource.addEventListener('sourceopen', function () {
+                    var sourceBuffer;
+
+                    log(id, 'The "sourceopen" event of the MediaSource was fired.');
+
+                    try {
+                        sourceBuffer = mediaSource.addSourceBuffer(mimeTypeWithCodec);
+
+                        sourceBuffer.addEventListener('abort', function () {
+                            log(id, 'The "abort" event of the SourceBuffer was fired.');
+                        });
+                        sourceBuffer.addEventListener('error', function () {
+                            log(id, 'The "error" event of the SourceBuffer was fired.');
+                        });
+                        sourceBuffer.addEventListener('updateend', function () {
+                            log(id, 'The "updateend" event of the SourceBuffer was fired.');
+                            log(id, 'Calling "endOfStream()" on the MediaSource.');
+
+                            mediaSource.endOfStream();
+                        });
+
+                        load(file)
+                            .then(function (buffer) {
+                                log(id, `The buffer of the file "${ file }" was loaded successfully.`);
+
+                                sourceBuffer.appendBuffer(buffer);
+                            })
+                            .catch(function () {
+                                log(id, `The file "${ file }" could not be loaded.`);
+                            });
+                    } catch (err) {
+                        console.error(err);
+
+                        log(id, `Creating a SourceBuffer of type "${ mimeType }" with ${ codec } as a codec failed. The original error was logged to the console.`);
+                    }
+                });
+            }
+
+            setup('audio/mp2t', 'MP3', 'audio.ts', 'audio/mp2t');
+
+            setup('audio/mp4', 'AAC', 'audio-aac.mp4', 'audio/mp4; codecs="mp4a.40.2"');
+
+            setup('audio/mp4', 'MP3', 'audio-mp3.mp4', 'audio/mp4');
+
+            setup('audio/webm', 'Opus', 'audio.webm', 'audio/webm; codecs="opus"');
+        </script>
+    </body>
+</html>
