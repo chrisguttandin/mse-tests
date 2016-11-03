@@ -154,6 +154,8 @@ ffmpeg -i audio.opus -c:a copy -strict experimental audio.webm
 
             setup('audio/mp4', 'AAC', 'audio-aac.mp4', 'audio/mp4; codecs="mp4a.40.2"');
 
+            setup('audio/mp4', 'AAC', 'audio-aac.acc', 'audio/mp4; codecs="mp4a.40.2"');
+
             setup('audio/mp4', 'MP3', 'audio-mp3.mp4', 'audio/mp4');
 
             setup('audio/webm', 'Opus', 'audio.webm', 'audio/webm; codecs="opus"');
