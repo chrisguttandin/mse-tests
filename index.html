@@ -12,21 +12,50 @@
                 <audio controls></audio>
                 <ul class="console"></ul>
             </li>
+            <pre>
+                <code>
+ffmpeg -f lavfi -i "sine=frequency=1000:duration=5" audio.wav
+lame audio.wav audio.mp3
+ffmpeg -i audio.mp3 -c:a copy audio.ts
+                </code>
+            </pre>
             <li id="mp4-aac">
                 <h2>AAC inside of a MP4 container</h2>
                 <audio controls></audio>
                 <ul class="console"></ul>
             </li>
+            <pre>
+                <code>
+ffmpeg -f lavfi -i "sine=frequency=1000:duration=5" audio.wav
+ffmpeg -i audio.wav -strict experimental audio.mp4
+mp4box -dash 10000 -frag 10000 -rap audio.mp4
+                </code>
+            </pre>
             <li id="mp4-mp3">
                 <h2>MP3 inside of a MP4 container</h2>
                 <audio controls></audio>
                 <ul class="console"></ul>
             </li>
+            <pre>
+                <code>
+ffmpeg -f lavfi -i "sine=frequency=1000:duration=5" audio.wav
+lame audio.wav audio.mp3
+mp4box -add audio.mp3#audio audio.m4a
+mp4box -dash 10000 -frag 10000 -rap audio.m4a
+                </code>
+            </pre>
             <li id="webm-opus">
                 <h2>Opus inside of a WebM container</h2>
                 <audio controls></audio>
                 <ul class="console"></ul>
             </li>
+            <pre>
+                <code>
+ffmpeg -f lavfi -i "sine=frequency=1000:duration=5" audio.wav
+opusenc audio.wav audio.opus
+ffmpeg -i audio.opus -c:a copy -strict experimental audio.webm
+                </code>
+            </pre>
         </ul>
         <script>
             'use strict';
