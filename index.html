@@ -7,6 +7,17 @@
     <body>
         <h1>MSE tests</h1>
         <ul>
+            <li id="mp3-mp3">
+                <h2>MP3 inside no container</h2>
+                <audio controls></audio>
+                <ul class="console"></ul>
+            </li>
+            <pre>
+                <code>
+ffmpeg -f lavfi -i "sine=frequency=1000:duration=5" audio.wav
+lame audio.wav audio.mp3
+                </code>
+            </pre>
             <li id="mp2t-mp3">
                 <h2>MP3 inside of a MPEG-TS container</h2>
                 <audio controls></audio>
@@ -149,6 +160,8 @@ ffmpeg -i audio.opus -c:a copy -strict experimental audio.webm
                     }
                 });
             }
+
+            setup('audio/mp3', 'MP3', 'audio.mp3', 'audio/mp3');
 
             setup('audio/mp2t', 'MP3', 'audio.ts', 'audio/mp2t');
 
