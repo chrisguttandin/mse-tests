@@ -7,11 +7,6 @@
     <body>
         <h1>MSE tests</h1>
         <ul>
-            <li id="aac-aac">
-                <h2>AAC inside of a MP4 container</h2>
-                <audio controls></audio>
-                <ul class="console"></ul>
-            </li>
             <li id="mp2t-mp3">
                 <h2>MP3 inside of a MPEG-TS container</h2>
                 <audio controls></audio>
@@ -154,8 +149,6 @@ ffmpeg -i audio.opus -c:a copy -strict experimental audio.webm
                     }
                 });
             }
-
-            setup('audio/aac', 'AAC', 'audio-aac.acc', 'audio/acc; codecs="mp4a.40.2"');
 
             setup('audio/mp2t', 'MP3', 'audio.ts', 'audio/mp2t');
 
