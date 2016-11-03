@@ -60,22 +60,20 @@ ffmpeg -i audio.opus -c:a copy -strict experimental audio.webm
         <script>
             'use strict';
 
-            function load (file) {
-                return new Promise(function (resolve, reject) {
-                    var xmlHttpRequest = new XMLHttpRequest();
+            function load (file, callback) {
+                var xmlHttpRequest = new XMLHttpRequest();
 
-                    xmlHttpRequest.open('GET', file);
-                    xmlHttpRequest.responseType = 'arraybuffer';
+                xmlHttpRequest.open('GET', file);
+                xmlHttpRequest.responseType = 'arraybuffer';
 
-                    xmlHttpRequest.onerror = function (event) {
-                        reject(event);
-                    };
-                    xmlHttpRequest.onload = function () {
-                        resolve(xmlHttpRequest.response);
-                    };
+                xmlHttpRequest.onerror = function (event) {
+                    callback(event);
+                };
+                xmlHttpRequest.onload = function () {
+                    callback(null, xmlHttpRequest.response);
+                };
 
-                    xmlHttpRequest.send();
-                });
+                xmlHttpRequest.send();
             }
 
             function log (id, message) {
