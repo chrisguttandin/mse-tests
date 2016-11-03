@@ -79,7 +79,7 @@ ffmpeg -i audio.opus -c:a copy -strict experimental audio.webm
             }
 
             function log (id, message) {
-                var cnsl = document.querySelector(`#${ id } .console`),
+                var cnsl = document.querySelector('#' + id + ' .console'),
                     item = document.createElement('li');
 
                 item.textContent = message;
@@ -92,15 +92,15 @@ ffmpeg -i audio.opus -c:a copy -strict experimental audio.webm
                     id,
                     mediaSource;
 
-                id = `${ mimeType.split(/\//)[1] }-${ codec.toLowerCase() }`;
+                id = mimeType.split(/\//)[1] + '-' + codec.toLowerCase();
 
                 if (MediaSource.isTypeSupported(mimeTypeWithCodec)) {
-                    log(id, `Audio of type "${ mimeType }" with ${ codec } as a codec seems to be supported.`);
+                    log(id, 'Audio of type "' + mimeType + '" with ' + codec + ' as a codec seems to be supported.');
                 } else {
-                    log(id, `Audio of type "${ mimeType }" with ${ codec } as a codec seems to be NOT supported.`);
+                    log(id, 'Audio of type "' + mimeType + '" with ' + codec + ' as a codec seems to be NOT supported.');
                 }
 
-                audioElement = document.querySelector(`#${ id } audio`);
+                audioElement = document.querySelector('#' + id + ' audio');
                 mediaSource = new MediaSource();
 
                 audioElement.src = URL.createObjectURL(mediaSource);
@@ -135,19 +135,19 @@ ffmpeg -i audio.opus -c:a copy -strict experimental audio.webm
                             mediaSource.endOfStream();
                         });
 
-                        load(file)
-                            .then(function (buffer) {
-                                log(id, `The buffer of the file "${ file }" was loaded successfully.`);
+                        load(file, function (err, buffer) {
+                            if (err === null) {
+                                log(id, 'The buffer of the file "' + file + '" was loaded successfully.');
 
                                 sourceBuffer.appendBuffer(buffer);
-                            })
-                            .catch(function () {
-                                log(id, `The file "${ file }" could not be loaded.`);
-                            });
+                            } else {
+                                log(id, 'The file "' + file + '" could not be loaded.');
+                            }
+                        });
                     } catch (err) {
                         console.error(err);
 
-                        log(id, `Creating a SourceBuffer of type "${ mimeType }" with ${ codec } as a codec failed. The original error was logged to the console.`);
+                        log(id, 'Creating a SourceBuffer of type "' + mimeType + '" with ' + codec + ' as a codec failed. The original error was logged to the console.');
                     }
                 });
             }
