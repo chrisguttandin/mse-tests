@@ -2,15 +2,14 @@ module.exports = {
     'build:development': [
         'clean',
         'htmlmin',
-        'webpack',
+        'webpack:development',
         'postcss:development',
         'copy:assets'
     ],
     'build:production': [
         'clean',
         'htmlmin',
-        'webpack',
-        'uglify',
+        'webpack:production',
         'postcss:production',
         'copy:assets'
     ],
