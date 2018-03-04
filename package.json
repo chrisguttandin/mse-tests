@@ -3,6 +3,11 @@
   "bugs": {
     "url": "https://github.com/chrisguttandin/mse-tests/issues"
   },
+  "config": {
+    "commitizen": {
+      "path": "cz-conventional-changelog"
+    }
+  },
   "description": "A collection of MSE tests.",
   "devDependencies": {
     "@commitlint/cli": "^6.1.3",
