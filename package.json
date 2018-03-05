@@ -51,6 +51,7 @@
     "url": "https://github.com/chrisguttandin/mse-tests.git"
   },
   "scripts": {
+    "commitmsg": "commitlint --edit --extends @commitlint/config-angular",
     "precommit": "grunt lint",
     "test": "grunt lint"
   },
