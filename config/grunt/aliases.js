@@ -31,8 +31,8 @@ module.exports = {
     ]),
     'lint': [
         'eslint',
-        'htmlhint',
-        'postcss:lint'
+        'postcss:lint',
+        'sh:lint'
     ],
     'monitor': [
         'build:development',
