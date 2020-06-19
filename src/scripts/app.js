@@ -1,4 +1,4 @@
-function load (file, callback) {
+function load(file, callback) {
     const xmlHttpRequest = new XMLHttpRequest();
 
     xmlHttpRequest.open('GET', file);
@@ -14,7 +14,7 @@ function load (file, callback) {
     xmlHttpRequest.send();
 }
 
-function log (id, message) {
+function log(id, message) {
     const cnsl = document.querySelector('#' + id + ' .console');
     const item = document.createElement('li');
 
@@ -23,7 +23,7 @@ function log (id, message) {
     cnsl.appendChild(item);
 }
 
-function setup (mimeType, codec, file, mimeTypeWithCodec) {
+function setup(mimeType, codec, file, mimeTypeWithCodec) {
     const id = mimeType.split(/\//)[1] + '-' + codec.toLowerCase();
 
     if (MediaSource.isTypeSupported(mimeTypeWithCodec)) {
@@ -75,7 +75,14 @@ function setup (mimeType, codec, file, mimeTypeWithCodec) {
                 }
             });
         } catch (err) {
-            log(id, 'Creating a SourceBuffer of type "' + mimeType + '" with ' + codec + ' as a codec failed. The original error was logged to the console.');
+            log(
+                id,
+                'Creating a SourceBuffer of type "' +
+                    mimeType +
+                    '" with ' +
+                    codec +
+                    ' as a codec failed. The original error was logged to the console.'
+            );
 
             throw err;
         }

@@ -5,7 +5,7 @@ module.exports = {
                 cwd: 'src/assets/',
                 dest: 'build/assets/',
                 expand: true,
-                src: [ '**' ]
+                src: ['**']
             }
         ]
     }
