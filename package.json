@@ -35,7 +35,7 @@
         "load-grunt-config": "^4.0.1",
         "prettier": "^2.3.2",
         "pretty-quick": "^3.1.1",
-        "webpack": "^5.51.1"
+        "webpack": "^5.51.2"
     },
     "homepage": "https://chrisguttandin.github.io/mse-tests",
     "license": "MIT",
