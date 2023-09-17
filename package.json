@@ -49,8 +49,5 @@
         "prepare": "husky install",
         "test": "npm run lint"
     },
-    "version": "1.0.16",
-    "dependencies": {
-        "linked": "^0.2.0"
-    }
+    "version": "1.0.16"
 }
