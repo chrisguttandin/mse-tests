@@ -36,6 +36,7 @@
     "license": "MIT",
     "main": "src/index.html",
     "name": "mse-tests",
+    "packageManager": "npm@12",
     "private": true,
     "repository": {
         "type": "git",
